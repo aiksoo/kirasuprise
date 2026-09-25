@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Для тебя 🤍</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #111111;
+            color: #f5f1ec;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                         "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ---------- ФОН ---------- */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 190, 200, 0.10), transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(255, 220, 180, 0.07), transparent 30%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ---------- ЗАСТАВКА ---------- */
+
+        .intro {
+            position: fixed;
+            inset: 0;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            z-index: 100;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-small {
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #a9a19a;
+            margin-bottom: 18px;
+        }
+
+        .intro h1 {
+            font-size: 34px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.15;
+            margin-bottom: 35px;
+        }
+
+        .open-button {
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.07);
+            color: white;
+            padding: 15px 28px;
+            border-radius: 100px;
+            font-size: 15px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .open-button:active {
+            transform: scale(0.95);
+            background: rgba(255,255,255,0.13);
+        }
+
+        /* ---------- ОСНОВНОЙ САЙТ ---------- */
+
+        main {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 70px 20px 60px;
+        }
+
+        .hello {
+            text-align: center;
+            margin-bottom: 55px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: appear 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hello span {
+            display: block;
+            color: #a9a19a;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .hello h2 {
+            font-size: 36px;
+            font-weight: 500;
+            line-height: 1.1;
+        }
+
+        /* ---------- ФОТО ---------- */
+
+        .photos {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin-bottom: 65px;
+        }
+
+        .photo {
+            position: relative;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #1d1d1d;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .photo.show {
+            animation: photoAppear 0.8s ease forwards;
+        }
+
+        .photo img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .photo:active img {
+            transform: scale(1.03);
+        }
+
+        /* небольшие подписи */
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 18px 18px;
+            background: linear-gradient(
+                transparent,
+                rgba(0,0,0,0.65)
+            );
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ---------- ТЕКСТ ---------- */
+
+        .message {
+            padding: 0 8px;
+            margin-bottom: 65px;
+        }
+
+        .message-label {
+            color: #a9a19a;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .message p {
+            color: #e9e3dd;
+            font-size: 18px;
+            line-height: 1.65;
+            font-weight: 350;
+            margin-bottom: 20px;
+        }
+
+        /* ---------- ЦИТАТА ---------- */
+
+        .quote {
+            text-align: center;
+            padding: 35px 20px;
+            margin-bottom: 70px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .quote p {
+            font-size: 23px;
+            line-height: 1.35;
+            font-weight: 400;
+            color: #f2ece6;
+        }
+
+        /* ---------- ФИНАЛ ---------- */
+
+        .final {
+            text-align: center;
+            padding-bottom: 30px;
+        }
+
+        .final .heart {
+            font-size: 27px;
+            margin-bottom: 18px;
+        }
+
+        .final p {
+            color: #a9a19a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @keyframes appear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes photoAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------- ДЛЯ БОЛЬШИХ ЭКРАНОВ ---------- */
+
+        @media (min-width: 600px) {
+            body {
+                background: #0d0d0d;
+            }
+
+            main {
+                padding-top: 100px;
+            }
+
+            .photo:hover img {
+                transform: scale(1.02);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     ЗАСТАВКА
+========================= -->
+
+<div class="intro" id="intro">
+
+    <div class="intro-small">
+        маленький сюрприз
+    </div>
+
+    <h1>
+        Я кое-что<br>
+        приготовил для тебя
+    </h1>
+
+    <button class="open-button" onclick="openCard()">
+        Открыть 🤍
+    </button>
+
+</div>
+
+
+<!-- =========================
+     ОСНОВНОЙ САЙТ
+========================= -->
+
+<main>
+
+    <section class="hello">
+
+        <span>немного слов</span>
+
+        <h2>
+            Для тебя
+        </h2>
+
+    </section>
+
+
+    <!-- =========================
+         ФОТОГРАФИИ
+    ========================= -->
+
+    <section class="photos">
+
+        <div class="photo">
+            <img src="C:\Users\Данил\Desktop\открытка для киры\IMG_0605.JPG" alt="Фото">
+            <div class="photo-caption">
+                    Это я красивый 
+            </div>
+        </div>
+
+        <div class="photo">
+            <img src="C:\Users\Данил\Desktop\открытка для киры\IMG_0604.JPG" alt="Фото">
+            <div class="photo-caption">
+                    Это ты красивая🤍
+            </div>
+        </div>
+
+        <div class="photo">
+            <img src="C:\Users\Данил\Desktop\открытка для киры\IMG_0602.JPG" alt="Фото">
+            <div class="photo-caption">
+                    А это мы 🤍
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ТЕКСТ
+    ========================= -->
+
+    <section class="message">
+
+        <div class="message-label">
+            послушай
+        </div>
+
+        <p>
+            Я понимаю что все еще впереди
+        </p>
+            Что иногда я могу быть мудаком 
+            и плохим собеседником 
+        <p>
+            Но в любом случае я могу это сказать 
+        </p>
+
+        <p>
+            Ты действительно очень хороший человек,
+            и я рад, что ты появилась у меня в жизни
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         ЦИТАТА
+    ========================= -->
+
+    <section class="quote">
+
+        <p>
+            «Если задуматься все не так уж и плохо»
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         ФИНАЛ
+    ========================= -->
+
+    <section class="final">
+
+        <div class="heart">
+            🤍
+        </div>
+
+        <p>
+            Просто хотел, чтобы ты знала:<br>
+            мне с тобой хорошо
+        </p>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    function openCard() {
+
+        const intro = document.getElementById("intro");
+
+        intro.classList.add("hidden");
+
+        document.body.style.overflow = "auto";
+
+        setTimeout(() => {
+
+            const photos = document.querySelectorAll(".photo");
+
+            photos.forEach((photo, index) => {
+
+                setTimeout(() => {
+                    photo.classList.add("show");
+                }, index * 250);
+
+            });
+
+        }, 500);
+    }
+
+    // Изначально блокируем прокрутку
+    document.body.style.overflow = "hidden";
+
+</script>
+
+</body>
+</html>
